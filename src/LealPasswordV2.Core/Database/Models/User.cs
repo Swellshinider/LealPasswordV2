@@ -2,9 +2,9 @@
 
 public class User
 {
-    public int UserId { get; set; }
+    public string UserId { get; set; } = string.Empty;
     public string Username { get; set; } = string.Empty;
-    public string MasterPasswordHash { get; set; } = string.Empty;
-    public string Salt { get; set; } = string.Empty;
+    public byte[] MasterPasswordHash { get; set; } = [];
+    public byte[] Salt { get; set; } = [];
     public DateTime CreatedAt { get; set; }
 }
