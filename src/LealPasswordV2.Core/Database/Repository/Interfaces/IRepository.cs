@@ -5,5 +5,5 @@ public interface IRepository<T> : IDisposable where T : class
     Task AddAsync(T entity);
     Task<T?> GetAsync(object obj);
     Task UpdateAsync(T entity);
-    Task DeleteAsync(int id);
+    Task DeleteAsync(string id);
 }

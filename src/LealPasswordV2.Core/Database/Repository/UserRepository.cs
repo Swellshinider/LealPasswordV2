@@ -16,42 +16,42 @@ public class UserRepository : IRepository<User>
         _userAccess = new UserAccess(_context._connection);
     }
 
-    public Task AddAsync(User entity)
+    public async Task AddAsync(User entity)
     {
         var exist = _userAccess.Exists(entity.Username).Result;
 
         if (exist)
-            return Task.FromException(new InvalidOperationException("User already exists."));
+            throw new ValidationException("User already exists.");
 
-        return _userAccess.AddAsync(entity);
+        await _userAccess.AddAsync(entity);
     }
 
-    public Task DeleteAsync(int id)
+    public async Task DeleteAsync(string id)
     {
         var exist = _userAccess.Exists(id).Result;
 
         if (!exist)
-            return Task.FromException(new InvalidOperationException("User does not exist."));
+            throw new ValidationException("User does not exist.");
 
-        return _userAccess.DeleteAsync(id);
+        await _userAccess.DeleteAsync(id);
     }
 
-    public Task<User?> GetAsync(object obj)
+    public async Task<User?> GetAsync(object obj)
     {
         if (obj is not User entity)
-            return Task.FromException<User?>(new ArgumentException("Invalid argument type. Expected User."));
+            throw new ArgumentException("Invalid argument type. Expected User.");
 
-        return _userAccess.GetByUsernamePasswordAsync(entity.Username, entity.MasterPasswordHash);
+        return await _userAccess.GetByUsername(entity.Username);
     }
 
-    public Task UpdateAsync(User entity)
+    public async Task UpdateAsync(User entity)
     {
-        var exist = _userAccess.Exists(entity.UserId).Result;
+        var exist = await _userAccess.Exists(entity.UserId);
 
         if (!exist)
-            return Task.FromException(new InvalidOperationException("User does not exist."));
+            throw new InvalidOperationException("User does not exist.");
 
-        return _userAccess.UpdateAsync(entity);
+        await _userAccess.UpdateAsync(entity);
     }
 
     #region [ Dispose ]

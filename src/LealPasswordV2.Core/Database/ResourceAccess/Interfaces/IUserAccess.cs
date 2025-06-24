@@ -3,6 +3,6 @@
 internal interface IUserAccess<T> : IAccess<T> where T : class
 {
     Task<bool> Exists(string username);
-    Task<bool> Exists(int id);
-    Task<T?> GetByUsernamePasswordAsync(string username, string masterPasswordHashed);
+    Task<bool> ExistsById(string id);
+    Task<T?> GetByUsername(string username);
 }

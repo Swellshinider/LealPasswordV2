@@ -40,16 +40,16 @@ internal sealed class DatabaseContext : IDisposable
         // Create tables
         command.CommandText = $@"
             CREATE TABLE IF NOT EXISTS Users (
-                UserId INTEGER PRIMARY KEY AUTOINCREMENT,
+                UserId TEXT PRIMARY KEY,
                 Username TEXT NOT NULL UNIQUE,
-                MasterPasswordHash TEXT NOT NULL,
-                Salt TEXT NOT NULL,
+                MasterPasswordHash BLOB NOT NULL,
+                Salt BLOB NOT NULL,
                 CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
             );
 
-            CREATE TABLE IF NOT EXISTS PasswordRegisters (
-                RegisterId INTEGER PRIMARY KEY AUTOINCREMENT,
-                UserId INTEGER NOT NULL,
+            CREATE TABLE IF NOT EXISTS Registers (
+                RegisterId TEXT PRIMARY KEY,
+                UserId TEXT NOT NULL,
                 Name TEXT NOT NULL,
                 Username TEXT NOT NULL,
                 EncryptedPassword TEXT NOT NULL,
@@ -60,21 +60,23 @@ internal sealed class DatabaseContext : IDisposable
             );
 
             CREATE TABLE IF NOT EXISTS CreditCards (
-                CardId INTEGER PRIMARY KEY AUTOINCREMENT,
-                UserId INTEGER NOT NULL,
+                CardId TEXT PRIMARY KEY,
+                UserId TEXT NOT NULL,
+                CardName TEXT NOT NULL,
                 CardholderName TEXT NOT NULL,
                 CardNumberEncrypted TEXT NOT NULL,
                 ExpirationDateEncrypted TEXT NOT NULL,
                 CVVEncrypted TEXT NOT NULL,
                 Brand TEXT NOT NULL,
                 CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                UpdatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS SecretNotes (
-                NoteId INTEGER PRIMARY KEY AUTOINCREMENT,
-                UserId INTEGER NOT NULL,
-                Title TEXT NOT NULL,
+                NoteId TEXT PRIMARY KEY,
+                UserId TEXT NOT NULL,
+                EncryptedTitle TEXT NOT NULL,
                 EncryptedNote TEXT NOT NULL,
                 CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 UpdatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,

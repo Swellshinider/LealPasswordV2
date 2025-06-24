@@ -14,10 +14,10 @@ internal static class Builder
 
         return new User
         {
-            UserId = reader.GetTypedValue<int>("UserId"),
+            UserId = reader.GetTypedValue<string>("UserId"),
             Username = reader.GetTypedValue<string>("Username"),
-            MasterPasswordHash = reader.GetTypedValue<string>("MasterPasswordHash"),
-            Salt = reader.GetTypedValue<string>("Salt"),
+            MasterPasswordHash = reader.GetTypedValue<byte[]>("MasterPasswordHash"),
+            Salt = reader.GetTypedValue<byte[]>("Salt"),
             CreatedAt = reader.GetTypedValue<DateTime>("CreatedAt")
         };
     }

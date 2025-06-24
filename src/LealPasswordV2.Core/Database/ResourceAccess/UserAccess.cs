@@ -26,50 +26,57 @@ internal class UserAccess : IUserAccess<User>
         return Task.FromResult(count > 0);
     }
 
-    public Task<bool> Exists(int id)
+    public async Task<bool> ExistsById(string id)
     {
         using var command = _connection.CreateCommand();
 
         command.CommandText = "SELECT COUNT(*) FROM Users WHERE UserId = @UserId";
         command.Parameters.AddWithValue("@UserId", id);
 
-        var count = (long)(command.ExecuteScalar() ?? 0);
+        var count = await command.ExecuteScalarAsync();
 
-        return Task.FromResult(count > 0);
+        if (count == null)
+            return false;
+
+        if (!long.TryParse(count.ToString(), out var q))
+            throw new InvalidOperationException("Failed to parse count from database.");
+
+        return q > 0;
     }
 
-    public Task AddAsync(User entity)
+    public async Task AddAsync(User entity)
     {
         using var command = _connection.CreateCommand();
 
         command.CommandText = @"
             INSERT INTO Users 
             (
+                UserId,
                 Username, 
                 MasterPasswordHash, 
                 Salt, 
                 CreatedAt
             )
             VALUES (
+                @UserId,
                 @Username, 
                 @MasterPasswordHash, 
                 @Salt, 
                 @CreatedAt
             );";
 
+        command.Parameters.AddWithValue("@UserId", Util.GenerateGuid());
         command.Parameters.AddWithValue("@Username", entity.Username);
         command.Parameters.AddWithValue("@MasterPasswordHash", entity.MasterPasswordHash);
         command.Parameters.AddWithValue("@Salt", entity.Salt);
         command.Parameters.AddWithValue("@CreatedAt", DateTime.Now);
-        var result = command.ExecuteNonQuery();
+        var result = await command.ExecuteNonQueryAsync();
 
         if (result != 1)
             throw new InvalidOperationException("Failed to add user.");
-
-        return Task.CompletedTask;
     }
 
-    public Task DeleteAsync(int id)
+    public async Task DeleteAsync(string id)
     {
         using var command = _connection.CreateCommand();
 
@@ -77,15 +84,13 @@ internal class UserAccess : IUserAccess<User>
 
         command.Parameters.AddWithValue("@UserId", id);
 
-        var result = command.ExecuteNonQuery();
+        var result = await command.ExecuteNonQueryAsync();
 
         if (result != 1)
             throw new InvalidOperationException("Failed to delete user.");
-
-        return Task.CompletedTask;
     }
 
-    public async Task<User?> GetByUsernamePasswordAsync(string username, string masterPasswordHashed)
+    public async Task<User?> GetByUsername(string username)
     {
         using var command = _connection.CreateCommand();
 
@@ -99,11 +104,9 @@ internal class UserAccess : IUserAccess<User>
             FROM 
                 Users 
             WHERE 
-                Username = @Username AND 
-                MasterPasswordHash = @MasterPasswordHash";
+                Username = @Username";
 
         command.Parameters.AddWithValue("@Username", username);
-        command.Parameters.AddWithValue("@MasterPasswordHash", masterPasswordHashed);
 
         using var reader = await command.ExecuteReaderAsync();
 
@@ -113,9 +116,9 @@ internal class UserAccess : IUserAccess<User>
     /// <summary>
     /// Implementation does not make sense in this context, as the UserAccess is not designed to retrieve a user by ID.
     /// </summary>
-    public Task<User?> GetAsync(int id) => throw new NotImplementedException();
+    public Task<User?> GetAsync(string id) => throw new NotImplementedException();
 
-    public Task UpdateAsync(User entity)
+    public async Task UpdateAsync(User entity)
     {
         using var command = _connection.CreateCommand();
 
@@ -134,11 +137,9 @@ internal class UserAccess : IUserAccess<User>
         command.Parameters.AddWithValue("@MasterPasswordHash", entity.MasterPasswordHash);
         command.Parameters.AddWithValue("@Salt", entity.Salt);
 
-        var result = command.ExecuteNonQuery();
+        var result = await command.ExecuteNonQueryAsync();
 
         if (result != 1)
             throw new InvalidOperationException("Failed to update user.");
-
-        return Task.CompletedTask;
     }
 }
