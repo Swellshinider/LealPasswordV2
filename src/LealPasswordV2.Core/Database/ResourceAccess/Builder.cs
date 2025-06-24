@@ -21,4 +21,25 @@ internal static class Builder
             CreatedAt = reader.GetTypedValue<DateTime>("CreatedAt")
         };
     }
+
+    internal static IEnumerable<Register> BuildRegisters(SqliteDataReader reader)
+    {
+        if (!reader.HasRows)
+            yield break;
+
+        while (reader.Read())
+        {
+            yield return new Register
+            {
+                RegisterId = reader.GetTypedValue<string>("RegisterId"),
+                UserId = reader.GetTypedValue<string>("UserId"),
+                EncryptedName = reader.GetTypedValue<string>("EncryptedName"),
+                EncryptedUsername = reader.GetTypedValue<string>("EncryptedUsername"),
+                EncryptedPassword = reader.GetTypedValue<string>("EncryptedPassword"),
+                EncryptedDescription = reader.GetTypedValue<string?>("EncryptedDescription"),
+                CreatedAt = reader.GetTypedValue<DateTime>("CreatedAt"),
+                UpdatedAt = reader.GetTypedValue<DateTime>("UpdatedAt")
+            };
+        }   
+    }
 }

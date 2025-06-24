@@ -35,6 +35,9 @@ public static class Util
         return attribute?.Description ?? value.ToString();
     }
 
+    public static bool IsNull(this string? text)
+        => string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text);
+
     /// <summary>
     /// Generates a new GUID
     /// </summary>

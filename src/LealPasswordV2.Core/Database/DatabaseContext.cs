@@ -50,10 +50,10 @@ internal sealed class DatabaseContext : IDisposable
             CREATE TABLE IF NOT EXISTS Registers (
                 RegisterId TEXT PRIMARY KEY,
                 UserId TEXT NOT NULL,
-                Name TEXT NOT NULL,
-                Username TEXT NOT NULL,
+                EncryptedName TEXT NOT NULL,
+                EncryptedUsername TEXT NOT NULL,
                 EncryptedPassword TEXT NOT NULL,
-                Description TEXT,
+                EncryptedDescription TEXT,
                 CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 UpdatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE
