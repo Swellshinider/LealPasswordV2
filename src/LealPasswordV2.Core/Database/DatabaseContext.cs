@@ -10,7 +10,7 @@ internal sealed class DatabaseContext : IDisposable
     internal DatabaseContext()
     {
         var directoryPath = Path.Combine(Configuration.BaseDirectory, "Data");
-        var filePath = Path.Combine(directoryPath, $"{Configuration.DatabaseName}.db");
+        var filePath = Path.Combine(directoryPath, $"{Configuration.AppName}.db");
 
         if (!Directory.Exists(directoryPath))
             Directory.CreateDirectory(directoryPath);

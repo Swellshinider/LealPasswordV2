@@ -6,7 +6,7 @@ public static class Configuration
 
     internal static bool DatabaseCreated { get; set; } = false;
 
-    internal static string DatabaseName => "LealPasswordV2";
+    public static string AppName => "LealPasswordV2";
 
     /// <summary>
     /// Gets the base directory for storing configuration files.
@@ -18,7 +18,7 @@ public static class Configuration
             if (_baseDirectory == null)
             {
                 var folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                _baseDirectory = Path.Combine(folder, "LealVault");
+                _baseDirectory = Path.Combine(folder, AppName);
 
                 if (!Directory.Exists(_baseDirectory))
                     Directory.CreateDirectory(_baseDirectory);

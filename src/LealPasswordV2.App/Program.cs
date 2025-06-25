@@ -26,17 +26,23 @@ public static class Program
             return 0;
         }
 
-        var logFilePath = Path.Combine(Core.Configuration.BaseDirectory, "logs", "app.log");
-        Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Debug()
-            .WriteTo.Console()
-            .WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day)
-            .CreateLogger();
+        var logFilePath = Path.Combine(Core.Configuration.BaseDirectory, "Logs", $"{Core.Configuration.AppName}_.log");
+        var loggerConfiguration = new LoggerConfiguration().WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day);
 
-        Log.Information("Application starting...");
+#if DEBUG
+        loggerConfiguration.MinimumLevel.Debug();
+        Log.Logger = loggerConfiguration.CreateLogger();
+        Log.Debug("Debug mode is enabled. Logging at Debug level.");
+#else
+        loggerConfiguration.MinimumLevel.Information();
+        Log.Logger = loggerConfiguration.CreateLogger();
+#endif
+
+        Log.Information("Application started...");
 
         try
         {
+            Log.Debug("Application arguments: {Args}", string.Join(", ", args));
             return BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
         }
         catch (Exception ex)
@@ -46,6 +52,7 @@ public static class Program
         }
         finally
         {
+            Log.Information("Application is shutting down...");
             _mutex?.ReleaseMutex();
             await Log.CloseAndFlushAsync();
         }

@@ -1,0 +1,55 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:local="clr-namespace:LealPasswordV2.App.Controls"
+             mc:Ignorable="d"
+			 d:DesignWidth="800"
+			 d:DesignHeight="450"
+             x:Class="LealPasswordV2.App.LoginPage">
+
+	<Grid
+		HorizontalAlignment="Stretch"
+		VerticalAlignment="Stretch"
+		Background="#0F0F0F">
+
+		<local:SierpinskiZoomControl />
+
+
+		<StackPanel
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center"
+			Width="400"
+			Height="300"
+			Background="#1F1F1F"
+			Spacing="10">
+			<TextBlock
+				Text="Login to your account"
+				FontSize="24"
+				Foreground="#FFFFFF"
+				TextAlignment="Center"/>
+			<TextBox
+				Name="UsernameTextBox"
+				Background="#2F2F2F"
+				Foreground="#FFFFFF"/>
+			<TextBox
+				Name="PasswordBox"
+				Background="#2F2F2F"
+				Foreground="#FFFFFF"/>
+			<Button
+				Name="ShowPasswordButton"
+				Content="Show Password"
+				Background="#3F3F3F"/>
+			<Button
+				Name="LoginButton"
+				Content="Login"
+				Background="#4F4F4F"/>
+			<Button
+				Name="CreateAccountButton"
+				Content="Create Account"
+				Background="#5F5F5F"/>
+		</StackPanel>
+
+	</Grid>
+
+</UserControl>
