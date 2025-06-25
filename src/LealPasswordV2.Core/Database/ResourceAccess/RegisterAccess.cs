@@ -26,6 +26,7 @@ internal class RegisterAccess : IRegisterAccess<Register>
                 EncryptedUsername, 
                 EncryptedPassword, 
                 EncryptedDescription, 
+                EncryptedTag,
                 CreatedAt, 
                 UpdatedAt
             )
@@ -36,6 +37,7 @@ internal class RegisterAccess : IRegisterAccess<Register>
                 @EncryptedUsername,
                 @EncryptedPassword,
                 @EncryptedDescription,
+                @EncryptedTag,
                 @CreatedAt,
                 @UpdatedAt
             )
@@ -45,12 +47,8 @@ internal class RegisterAccess : IRegisterAccess<Register>
         command.Parameters.AddWithValue("@EncryptedName", entity.EncryptedName);
         command.Parameters.AddWithValue("@EncryptedUsername", entity.EncryptedUsername);
         command.Parameters.AddWithValue("@EncryptedPassword", entity.EncryptedPassword);
-
-        if (entity.EncryptedDescription.IsNull())
-            command.Parameters.AddWithValue("@EncryptedDescription", entity.EncryptedDescription);
-        else
-            command.Parameters.AddWithValue("@EncryptedDescription", DBNull.Value);
-
+        command.Parameters.AddWithValue("@EncryptedDescription", entity.EncryptedDescription);
+        command.Parameters.AddWithValue("@EncryptedTag", entity.EncryptedTag);
         command.Parameters.AddWithValue("@CreatedAt", DateTime.Now);
         command.Parameters.AddWithValue("@UpdatedAt", DateTime.Now);
 
@@ -72,6 +70,7 @@ internal class RegisterAccess : IRegisterAccess<Register>
                 EncryptedUsername, 
                 EncryptedPassword, 
                 EncryptedDescription, 
+                EncryptedTag,
                 CreatedAt, 
                 UpdatedAt
             FROM 
@@ -86,11 +85,6 @@ internal class RegisterAccess : IRegisterAccess<Register>
         return Builder.BuildRegisters(reader);
     }
 
-    /// <summary>
-    /// Implementation does not make sense in this context, as the RegisterAcesss is not designed to retrieve a register by ID.
-    /// </summary>
-    public Task<Register?> GetAsync(string id) => throw new NotImplementedException();
-
     public async Task UpdateAsync(Register entity)
     {
         using var command = _connection.CreateCommand();
@@ -102,6 +96,7 @@ internal class RegisterAccess : IRegisterAccess<Register>
                 EncryptedUsername = @EncryptedUsername, 
                 EncryptedPassword = @EncryptedPassword, 
                 EncryptedDescription = @EncryptedDescription, 
+                EncryptedTag = @EncryptedTag,
                 UpdatedAt = @UpdatedAt
             WHERE 
                 RegisterId = @RegisterId";
@@ -110,12 +105,8 @@ internal class RegisterAccess : IRegisterAccess<Register>
         command.Parameters.AddWithValue("@EncryptedName", entity.EncryptedName);
         command.Parameters.AddWithValue("@EncryptedUsername", entity.EncryptedUsername);
         command.Parameters.AddWithValue("@EncryptedPassword", entity.EncryptedPassword);
-
-        if (entity.EncryptedDescription.IsNull())
-            command.Parameters.AddWithValue("@EncryptedDescription", entity.EncryptedDescription);
-        else
-            command.Parameters.AddWithValue("@EncryptedDescription", DBNull.Value);
-
+        command.Parameters.AddWithValue("@EncryptedDescription", entity.EncryptedDescription);
+        command.Parameters.AddWithValue("@EncryptedTag", entity.EncryptedTag);
         command.Parameters.AddWithValue("@UpdatedAt", DateTime.Now);
 
         var result = await command.ExecuteNonQueryAsync();

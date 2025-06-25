@@ -54,6 +54,7 @@ internal sealed class DatabaseContext : IDisposable
                 EncryptedUsername TEXT NOT NULL,
                 EncryptedPassword TEXT NOT NULL,
                 EncryptedDescription TEXT,
+                EncryptedTag TEXT,
                 CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 UpdatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE

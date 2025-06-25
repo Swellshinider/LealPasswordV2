@@ -113,11 +113,6 @@ internal class UserAccess : IUserAccess<User>
         return Builder.BuildUser(reader);
     }
 
-    /// <summary>
-    /// Implementation does not make sense in this context, as the UserAccess is not designed to retrieve a user by ID.
-    /// </summary>
-    public Task<User?> GetAsync(string id) => throw new NotImplementedException();
-
     public async Task UpdateAsync(User entity)
     {
         using var command = _connection.CreateCommand();

@@ -37,6 +37,7 @@ internal static class Builder
                 EncryptedUsername = reader.GetTypedValue<string>("EncryptedUsername"),
                 EncryptedPassword = reader.GetTypedValue<string>("EncryptedPassword"),
                 EncryptedDescription = reader.GetTypedValue<string?>("EncryptedDescription"),
+                EncryptedTag = reader.GetTypedValue<string?>("EncryptedTag"),
                 CreatedAt = reader.GetTypedValue<DateTime>("CreatedAt"),
                 UpdatedAt = reader.GetTypedValue<DateTime>("UpdatedAt")
             };
