@@ -13,7 +13,16 @@
 		VerticalAlignment="Stretch"
 		Background="#0F0F0F">
 
-		<local:SierpinskiZoomControl />
+		<local:GeometricPatternCanvas
+			IsAnimated="False">
+			<Panel Background="AliceBlue"
+				   DockPanel.Dock="Left"
+				   HorizontalAlignment="Stretch"
+				   VerticalAlignment="Stretch">
+				<Button
+					Content="AAA"></Button>
+			</Panel>
+		</local:GeometricPatternCanvas>
 
 
 		<StackPanel
