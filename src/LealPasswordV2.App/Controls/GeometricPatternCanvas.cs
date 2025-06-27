@@ -17,14 +17,17 @@ internal class GeometricPatternCanvas : Canvas
     public static readonly StyledProperty<bool> AnimatedProperty =
         AvaloniaProperty.Register<GeometricPatternCanvas, bool>(nameof(IsAnimated), true);
 
-    public static readonly StyledProperty<TimeSpan> AnimationIntervalProperty =
-        AvaloniaProperty.Register<GeometricPatternCanvas, TimeSpan>(nameof(AnimationInterval), TimeSpan.FromMilliseconds(50));
+    public static readonly StyledProperty<long> AnimationIntervalProperty =
+        AvaloniaProperty.Register<GeometricPatternCanvas, long>(nameof(AnimationInterval), 50);
 
     public static readonly StyledProperty<Color> LineColorProperty =
         AvaloniaProperty.Register<GeometricPatternCanvas, Color>(nameof(LineColor), Colors.Gray);
 
     public static readonly StyledProperty<bool> IsRegularPolygonProperty =
         AvaloniaProperty.Register<GeometricPatternCanvas, bool>(nameof(IsRegularPolygon), true);
+
+    public static readonly StyledProperty<Color> BackgroundColorProperty =
+        AvaloniaProperty.Register<GeometricPatternCanvas, Color>(nameof(Background), Colors.Transparent);
 
     public int VerticesQuantity
     {
@@ -38,7 +41,7 @@ internal class GeometricPatternCanvas : Canvas
         set => SetValue(AnimatedProperty, value);
     }
 
-    public TimeSpan AnimationInterval
+    public long AnimationInterval
     {
         get => GetValue(AnimationIntervalProperty);
         set => SetValue(AnimationIntervalProperty, value);
@@ -57,27 +60,39 @@ internal class GeometricPatternCanvas : Canvas
         {
             _initialized = false; // Reset initialization to recalculate vertices
             _timer.Stop(); // Stop the timer to prevent rendering
-            InvalidateArrange(); // Force re-arrangement of the canvas
             SetValue(IsRegularPolygonProperty, value);
         }
     }
 
-    private readonly DispatcherTimer _timer;
-    private readonly Random _rand = new();
-    private List<Point> _vertices = [];
-    private bool _initialized = false;
-    private double _angle = 0;
+    public Color BackgroundColor
+    {
+        get => GetValue(BackgroundColorProperty);
+        set
+        {
+            SetValue(BackgroundColorProperty, value);
+            Background = new SolidColorBrush(value);
+        }
+    }
+
     private Point _center;
+    private double _angle = 0;
+    private bool _initialized = false;
+    private List<Point> _vertices = [];
+
+    private readonly Random _rand = new();
+    private readonly DispatcherTimer _timer;
 
     public GeometricPatternCanvas()
     {
-        _timer = new DispatcherTimer(AnimationInterval, DispatcherPriority.Normal, RenderGeometricPattern);
+        _timer = new DispatcherTimer()
+        {
+            IsEnabled = true,
+            Interval = TimeSpan.FromMilliseconds(AnimationInterval),
+            Tag = "LealPasswordV2_GeometricPatternCanvasTimer"
+        };
+        _timer.Tick += RenderGeometricPattern;
         LayoutUpdated += OnLayoutUpdated;
     }
-
-    protected override Size MeasureOverride(Size availableSize) => availableSize;
-
-    protected override Size ArrangeOverride(Size finalSize) => finalSize;
 
     private void OnLayoutUpdated(object? sender, EventArgs e)
     {
@@ -102,7 +117,7 @@ internal class GeometricPatternCanvas : Canvas
         }
         else
         {
-            _vertices = [.. Enumerable.Range(0, VerticesQuantity) 
+            _vertices = [.. Enumerable.Range(0, VerticesQuantity)
                                 .Select(_ => new Point(Math.Clamp(_rand.NextDouble() * Bounds.Width, 0, Bounds.Width),
                                                        Math.Clamp(_rand.NextDouble() * Bounds.Height, 0, Bounds.Height)))];
         }
@@ -152,7 +167,7 @@ internal class GeometricPatternCanvas : Canvas
                     StartPoint = rotated[i],
                     EndPoint = rotated[j],
                     Stroke = stroke,
-                    StrokeThickness = 0.3
+                    StrokeThickness = 0.4
                 });
             }
         }
@@ -170,6 +185,7 @@ internal class GeometricPatternCanvas : Canvas
         var sin = Math.Sin(angle);
         var dx = point.X - center.X;
         var dy = point.Y - center.Y;
+
         return new Point(
             center.X + (dx * cos - dy * sin),
             center.Y + (dx * sin + dy * cos)
