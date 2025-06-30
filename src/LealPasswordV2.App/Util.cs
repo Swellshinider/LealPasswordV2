@@ -45,6 +45,21 @@ public static class Util
         return background as IBrush;
     }
 
+    public static SolidColorBrush ToSolidColorBrush(this IBrush? brush)
+    {
+        if (brush is null)
+            return new SolidColorBrush(Colors.Transparent);
+
+        var type = brush.GetType();
+        var colorProperty = type.GetProperty("Color");
+        var color = colorProperty?.GetValue(brush);
+
+        if (color is Color validColor)
+            return new SolidColorBrush(validColor);
+
+        return new SolidColorBrush(Colors.Transparent);
+    }
+
     /// <summary>
     /// Displays a message box with the specified title, message, icon, and button definitions.
     /// </summary>

@@ -14,45 +14,69 @@
 
 		<local:GlassBorder
 			Width="400"
-			HorizontalAlignment="Right"
-			VerticalAlignment="Stretch"
-			Margin="0, 10, 10, 10"
-			CornerRadius="20"
+			HorizontalAlignment="Left"
+			VerticalAlignment="Center"
+			Margin="25, 0, 0, 0"
+			CornerRadius="15"
 			BorderThickness="3"
-			BorderBrush="#33FFCC"
-			>
+			BorderBrush="{DynamicResource TernaryTranslucentBrush}">
 
 			<StackPanel
-				Margin="10"
+				Margin="20"
 				HorizontalAlignment="Stretch"
 				VerticalAlignment="Stretch"
 				Background="Transparent"
-				Spacing="10">
+				Spacing="15">
+
+				<Image
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center"
+					Width="50"
+					Height="50"
+					Source="/Assets/Images/LealPasswordV2_Icon.png"/>
 
 				<TextBlock
-					Text="Login to your account"
+					Text="Welcome Back"
 					FontSize="24"
 					Foreground="#FFFFFF"
 					TextAlignment="Center"/>
+
+				<Grid
+					HorizontalAlignment="Center"
+					ColumnDefinitions="Auto, Auto">
+
+					<TextBlock
+						Grid.Column="0"
+						Foreground="#CCFFFFFF"
+						Text="Don't have and account yet?"/>
+
+					<TextBlock
+						Grid.Column="1"
+						Foreground="#FFFFFF"
+						Margin="5, 0, 0, 0"
+						Cursor="Hand"
+						PointerPressed="SignUp_Click"
+						Text="Sign up Here"/>
+				</Grid>
+
 				<TextBox
 					Name="UsernameTextBox"
+					Watermark="Username"
 					Foreground="#FFFFFF"/>
 				<TextBox
 					Name="PasswordBox"
+					Watermark="Password"
+					PasswordChar="*"
 					Foreground="#FFFFFF"/>
-				<Button
-					Name="ShowPasswordButton"
-					Content="Show Password"
-					Background="#3F3F3F"/>
+
 				<Button
 					Name="LoginButton"
-					Content="Login"
-					Background="#4F4F4F"/>
-				<Button
-					Name="CreateAccountButton"
-					Content="Create Account"
-					Background="#5F5F5F"/>
-
+					HorizontalAlignment="Stretch"
+					Background="{DynamicResource HighlightBrush}">
+					<TextBlock
+						Text="Login"
+						TextAlignment="Center"/>
+				</Button>
 			</StackPanel>
 		</local:GlassBorder>
 

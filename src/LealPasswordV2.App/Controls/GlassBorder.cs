@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using System;
+using System.Linq;
 
 namespace LealPasswordV2.App.Controls;
 
@@ -21,18 +22,34 @@ internal class GlassBorder : Border
 
     protected override void OnLoaded(RoutedEventArgs e)
     {
+        base.OnLoaded(e);
+        LoadShadowEffect();
+        LoadBackgroundTransparency();
+    }
+
+    private void LoadShadowEffect()
+    {
+        Effect = new DropShadowEffect()
+        {
+            Opacity = Math.Clamp(OpacityLevel, 0, 1),
+            BlurRadius = 8,
+            OffsetX = 0,
+            OffsetY = 0,
+        };
+        ClipToBounds = true;
+    }
+
+    private void LoadBackgroundTransparency()
+    {
         SolidColorBrush baseColor;
         var parentColor = this.FindParentBackground();
-
-        if (parentColor is SolidColorBrush pc)
-            baseColor = pc;
-        else
-            baseColor = new SolidColorBrush(Colors.Black);
-
         var opacity = (byte)(255 * Math.Clamp(OpacityLevel, 0, 1));
 
-        Background = new SolidColorBrush(new Color(opacity, baseColor.Color.R, baseColor.Color.G, baseColor.Color.B));
+        if (parentColor is null)
+            baseColor = new SolidColorBrush(Colors.Black);
+        else
+            baseColor = parentColor.ToSolidColorBrush();
 
-        base.OnLoaded(e);
+        Background = new SolidColorBrush(new Color(opacity, baseColor.Color.R, baseColor.Color.G, baseColor.Color.B));
     }
 }

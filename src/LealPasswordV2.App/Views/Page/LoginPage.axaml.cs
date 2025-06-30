@@ -8,4 +8,8 @@ public partial class LoginPage : UserControl
     {
         InitializeComponent();
     }
+
+    private void SignUp_Click(object? sender, Avalonia.Input.PointerPressedEventArgs e)
+    {
+    }
 }

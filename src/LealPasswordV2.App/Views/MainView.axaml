@@ -11,18 +11,19 @@
         x:Class="LealPasswordV2.App.MainView"
 		CanResize="False"
 		WindowStartupLocation="CenterScreen"
+		RequestedThemeVariant="Default"
         Title="LealPassword V2">
 
 	<Grid
 		HorizontalAlignment="Stretch"
-		VerticalAlignment="Stretch">
+		VerticalAlignment="Stretch"
+		Background="{DynamicResource PrimaryBrush}">
 
 		<local:GeometricPatternCanvas/>
 
 		<ContentControl
 			HorizontalAlignment="Stretch"
 			VerticalAlignment="Stretch"
-			Background="Transparent"
 			Content="{Binding ContainerPage}"/>
 	</Grid>
 
