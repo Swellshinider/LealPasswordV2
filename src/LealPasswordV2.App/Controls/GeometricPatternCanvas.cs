@@ -94,7 +94,17 @@ internal class GeometricPatternCanvas : Canvas
         LayoutUpdated += OnLayoutUpdated;
     }
 
-    private void OnLayoutUpdated(object? sender, EventArgs e)
+    public void Reset()
+    {
+        _initialized = false;
+        _angle = 0;
+        _timer.Stop();
+        _vertices.Clear();
+        Children.Clear();
+        Initialize();
+    }
+
+    private void Initialize()
     {
         if (_initialized || Bounds.Width == 0 || Bounds.Height == 0)
             return;
@@ -124,6 +134,8 @@ internal class GeometricPatternCanvas : Canvas
 
         _timer.Start();
     }
+
+    private void OnLayoutUpdated(object? sender, EventArgs e) => Initialize();
 
     private void RenderGeometricPattern(object? sender, EventArgs e)
     {
