@@ -1,9 +1,8 @@
 ﻿using Avalonia.Controls;
-using System.ComponentModel;
 
 namespace LealPasswordV2.App.ViewModels
 {
-    public class MainViewViewModel : INotifyPropertyChanged
+    public class MainViewViewModel : BaseViewModel
     {
         private Control? _containerPage;
         private int _verticesQuantity = 3;
@@ -77,10 +76,5 @@ namespace LealPasswordV2.App.ViewModels
                 }
             }
         }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        private void OnPropertyChange(string propertyName)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

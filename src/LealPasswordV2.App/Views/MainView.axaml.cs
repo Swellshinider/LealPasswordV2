@@ -9,7 +9,6 @@ namespace LealPasswordV2.App;
 public partial class MainView : Window
 {
     private readonly LoginPage _loginPage = new();
-    private readonly MainViewViewModel _viewModel = new();
 
     // Fixed size for the main window 16:9
     private const int FixedWidth = 1280;
@@ -18,8 +17,8 @@ public partial class MainView : Window
     public MainView()
     {
         InitializeComponent();
-        DataContext = _viewModel;
-        _viewModel.ContainerPage = _loginPage;
+        DataContext = ViewModel;
+        ViewModel.ContainerPage = _loginPage;
 
         Width = FixedWidth;
         Height = FixedHeight;
@@ -28,27 +27,5 @@ public partial class MainView : Window
         CanResize = false;
     }
 
-    private void SliderVertices_ValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
-    {
-        var vertices = (int)Math.Clamp(e.NewValue, 3, 10);
-        _viewModel.VerticesQuantity = vertices;
-
-        if (_geometricCanvas == null)
-            return;
-
-        _geometricCanvas.VerticesQuantity = vertices;
-        _geometricCanvas.Reset();
-    }
-
-    private void SliderSpeed_ValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
-    {
-        var speed = (int)Math.Clamp(e.NewValue, 1, 5);
-        _viewModel.Speed = speed; 
-        
-        if (_geometricCanvas == null)
-            return;
-
-        //_geometricCanvas.AnimationInterval = speed;
-        _geometricCanvas.Reset();
-    }
+    private MainViewViewModel ViewModel { get; } = new MainViewViewModel();
 }

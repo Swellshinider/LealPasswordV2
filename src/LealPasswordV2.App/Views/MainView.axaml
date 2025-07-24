@@ -17,7 +17,7 @@
 	<Grid
 		HorizontalAlignment="Stretch"
 		VerticalAlignment="Stretch"
-		ColumnDefinitions="*, Auto"
+		ColumnDefinitions="*"
 		Background="{DynamicResource PrimaryBrush}">
 
 		<local:GeometricPatternCanvas
@@ -29,33 +29,6 @@
 			HorizontalAlignment="Stretch"
 			VerticalAlignment="Stretch"
 			Content="{Binding ContainerPage}"/>
-
-		<Grid
-			Width="250"
-			Height="110"
-			Grid.Column="1"
-			Margin="0, 0, 25, 25"
-			ColumnDefinitions="*"
-			HorizontalAlignment="Right"
-			VerticalAlignment="Bottom"
-			RowDefinitions="20, 50, 20, 50">
-
-			<TextBlock
-				Grid.Row="0"
-				Text="{Binding VerticesQuantityText}"/>
-
-			<Slider
-				Grid.Row="1"
-				Minimum="3"
-				Maximum="20"
-				ValueChanged="SliderVertices_ValueChanged"/>
-
-			<CheckBox
-				Grid.Row="3">
-				Rotate
-			</CheckBox>
-
-		</Grid>
 
 	</Grid>
 

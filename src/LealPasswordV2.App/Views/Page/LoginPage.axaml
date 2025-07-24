@@ -62,17 +62,27 @@
 				<TextBox
 					Name="UsernameTextBox"
 					Watermark="Username"
-					Foreground="#FFFFFF"/>
+					Foreground="#FFFFFF"
+					Text="{Binding Username}"/>
 				<TextBox
 					Name="PasswordBox"
 					Watermark="Password"
 					PasswordChar="*"
-					Foreground="#FFFFFF"/>
+					Foreground="#FFFFFF"
+					Text="{Binding Password}"/>
+
+				<CheckBox
+					Content="Show password"
+					Foreground="#FFFFFF"
+					Checked="ShowPassword_Checked"
+					Unchecked="HidePassword_Checked"/>
 
 				<Button
 					Name="LoginButton"
 					HorizontalAlignment="Stretch"
-					Background="{DynamicResource HighlightBrush}">
+					Background="{DynamicResource HighlightBrush}"
+					Click="LogIn_Click"
+					>
 					<TextBlock
 						Text="Login"
 						TextAlignment="Center"/>
