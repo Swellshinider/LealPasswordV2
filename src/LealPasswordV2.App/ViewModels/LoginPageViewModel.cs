@@ -16,10 +16,13 @@ namespace LealPasswordV2.App.ViewModels
                     return;
 
                 if (string.IsNullOrWhiteSpace(value))
-                    throw new ValidationException("Username cannot be empty.");
-
-                _username = value;
-                OnPropertyChange(nameof(Username));
+                    AddError(nameof(Username), "Username cannot be empty.");
+                else
+                {
+                    _username = value;
+                    ClearErrors(nameof(Username));
+                    OnPropertyChange(nameof(Username));
+                }
             }
         }
 
@@ -32,10 +35,13 @@ namespace LealPasswordV2.App.ViewModels
                     return;
 
                 if (string.IsNullOrWhiteSpace(value))
-                    throw new ValidationException("Password cannot be empty.");
-
-                _password = value;
-                OnPropertyChange(nameof(Password));
+                    AddError(nameof(Password), "Password cannot be empty.");
+                else
+                {
+                    _password = value;
+                    ClearErrors(nameof(Password));
+                    OnPropertyChange(nameof(Password));
+                }
             }
         }
     }
